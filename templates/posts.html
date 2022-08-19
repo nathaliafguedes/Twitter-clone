@@ -1,0 +1,61 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+<section class="content">
+  <section class="heading">
+    <img src="{% static 'img/Twitter-logo.svg.png'%} " alt="" />
+    <h1>Home</h1>
+  </section>
+  <section class="post_form">
+    <form action="/" enctype="multipart/form-data" method="POST">
+      {% csrf_token %}
+      <input type="text" name="name" placeholder="Name" required />
+      <textarea name="body" placeholder="Tell us anything" required></textarea>
+      <input type="file" id="myFile" name="image" />
+      <input type="submit" value="Tweet" id="tweet" />
+    </form>
+  </section>
+  <section class="posts">
+    <ul>
+      {% for post in posts reversed %}
+      <li>
+        <img class="menu_icon js-menu-icon" src="{% static 'img/menu.png'%}" />
+        <div class="menu">
+          <a href="/edit/{{post.id}}">Edit</a><br />
+          <a href="/delete/{{ post.id }}">Delete</a>
+        </div>
+
+        <div class="logo">
+          <img src="{% static 'img/user.png' %}" />
+        </div>
+        <div class="name_body">
+          <div class="name">{{post.name}}</div>
+          <br />
+          <div class="datetime">{{post.created_at}}</div>
+          <br />
+          <p>{{post.body}}</p>
+          <br />
+          {%if post.image.url%}
+          <div class="imgupload">
+            <img src="{{post.image.url}}" alt="" />
+          </div>
+          {% endif %}
+          <form action="{% url 'like_post' post.pk%}" method="POST">
+            {%csrf_token%}
+
+           <a href="/like/{{post.id}}"><img src="{% static 'img/like.png'%}" alt=""></a>
+              Like
+            </button>
+            {{post.likes}}
+          </form>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.js"
+    integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"
+  ></script>
+  <script src="{% static 'js/posts.js' %}"></script>
+</section>
+{% endblock %}

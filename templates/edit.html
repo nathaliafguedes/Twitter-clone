@@ -1,0 +1,22 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+<section class="content">
+  <section class="heading">
+    <img src="{% static 'img/Twitter-logo.svg.png'%} " alt="" />
+    <h1>Home</h1>
+  </section>
+  <section class="post_form">
+    <form action="/edit/{{post.id}}/" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="text" name="name" value="{{post.name}}" required />
+      <textarea name="body"  required>{{post.body}}</textarea>
+      
+      <div class="imgupload">
+        <img src="{{post.image.url}}" alt="">
+      </div>
+      <input type="file" id="myFile" name="image" />
+      <input type="submit" value="update" id="tweet" />
+      <a href="/"> <input type="button" value="cancel" id="tweet" /></a>
+    </form>
+  </section>
+</section>
+{% endblock %}
